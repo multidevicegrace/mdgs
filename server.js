@@ -1,6 +1,4 @@
 var Server = require('ws').Server;
-var fs = require('fs');
-var log_file = fs.createWriteStream(__dirname + "/debug.log", {flags : 'a'});
 var http = require('http');
 var logging = false;
 
@@ -53,9 +51,9 @@ function start() {
       msg += keys[i] + ": " + vals[i];
     }
     msg += " }";
-    console.log("Server: " + msg);
+    
   } catch (e) {
-    console.log("Server failed to start on port " + port + ", trying port " + (port + 1));
+    
     port++;
     count++;
     if (count < maxCount) {
@@ -65,8 +63,7 @@ function start() {
 }
 
 
-function exitHandler(options,err) {
-  if (err) { console.log(err.stack); }
+function exitHandler(options,err) {  
   if (options.exit) {
     for (var i = 0; i < sockets.length; i++) {
       if (sockets[i] && sockets[i].readyState != 3) {
@@ -76,7 +73,7 @@ function exitHandler(options,err) {
         } catch (er) {}
       }
     }
-    console.log("Server shutting down");
+    
     process.exit();
   }
 }
@@ -105,8 +102,11 @@ function startServer() {
       w.id = id;
       w.auth = false;
       w.authCount = 0;
-      console.log('New Connection id: ', id);
-      console.log("Address: " + w._socket.remoteAddress + " " + w._socket.remotePort);
+      console.
+      
+      
+      ('New Connection id: ', id);
+      
 
       w.on('message', function(_msg){
         if (_msg.length > maxMessage) { drop(w.id); return; }
@@ -114,7 +114,7 @@ function startServer() {
         try {
           var msg = JSON.parse(_msg);
         } catch (e) {
-          console.log(w.id + " unknown message: " + _msg);
+          
           drop(w.id);
           return;
         }
@@ -130,14 +130,14 @@ function startServer() {
 
       w.on('close', function() {
         drop(w.id);
-        console.log(w.id + " disconnected.");
+        
       });
 
       sockets[id] = w;
     });
   } catch (error) {
-    console.log("Error:");
-    console.log(error);
+    
+    
   }
 }
 
@@ -164,8 +164,6 @@ function handleAuth(w,msg) {
     if (w.authCount >= authAttempts) {
       w.close();
     }
-    log(w.id + " failed auth. Attempt " + w.authCount + " of " + authAttempts);
-
   }
 }
 
@@ -236,9 +234,9 @@ function drop(id) {
   } else {
     t += " No tiles sent.";
   }
-  // console.log(sockets[id].tcnt);
-  // console.log(sockets[id].ttyp);
-  log(t);
+  // 
+  // 
+  
 
   sockets[id].close();
   sockets.remove(id);
@@ -253,14 +251,14 @@ function joinHub(hub,id) {
     hubs[hub] = [id];
     send(id,JSON.stringify({jhub:"OK",hub:hub}));
     sockets[id].hub = hub;
-    console.log(id + " created hub: " + hub);
+    
   } else {
     if (!hubs[hub].includes(id)) {
       // sendToHub(hub,sname,{jhub:id});
       hubs[hub].push(id);
       sockets[id].hub = hub;
       send(id,JSON.stringify({jhub:"OK",hub:hub}));
-      console.log(id + " joined hub: " + hub);
+      
     }
   }
 }
@@ -275,7 +273,7 @@ function leaveHub(hub,id) {
 
 function sendToSID(sid,id,msg) {
   if (debug) {
-    console.log("Send to: " + sid + ", from: " + id);
+    
   }
   if (sid == id) { return; }
   if (sockets[sid] && sockets[sid].hub != undefined && sockets[id].hub != undefined
@@ -290,7 +288,7 @@ function sendToSID(sid,id,msg) {
         sockets[id].tcnt.push(msg.tileCount);
         sockets[id].ttyp.push(sockets[sid].type);
       }
-      // console.log(id + " sent " + msg.tileCount + ", to " + sockets[sid].type);
+      // 
     }
     delete msg.toS;
     send(sid,JSON.stringify(msg));
@@ -299,9 +297,9 @@ function sendToSID(sid,id,msg) {
 
 function sendToHub(hub,id,msg) {
   if (debug && id != sname) {
-    console.log("Send to hub: " + hub + ", from: " + id);
+    
     if (hubs[hub]) {
-      console.log(hubs[hub]);
+      
     }
   }
   if ((id == sname || sockets[id].hub != undefined) && hubs[hub] != undefined) {
@@ -333,10 +331,4 @@ Array.prototype.remove = function(e) {
     return this.splice(index,1);
   }
 };
-
-function log(msg) {
-  if (logging) { 
-    log_file.write(msg + "\n");  
-  }
-}
 
