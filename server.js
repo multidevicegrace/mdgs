@@ -17,13 +17,11 @@ const server = express()
       } else if (req.path.match("tiledgrace")) {
         page = "/mdg/tiledgrace/index.html";
       }
-      if (page) {  
+      if (page) {
         res.sendFile(path.join(__dirname, page));
       } else {
-        res.status(404).send('Page not found.')
+        res.sendFile( INDEX );
       }
-    } else {
-      res.sendFile( INDEX );
     }
   })   
   .listen(PORT, () => console.log(`Listening on ${ PORT }`));
