@@ -4,7 +4,7 @@ var log_file = fs.createWriteStream(__dirname + "/debug.log", {flags : 'a'});
 var http = require('http');
 var logging = false;
 
-var port = 64999;
+var port = process.env.PORT || 3000;
 var server;
 var ws;
 var cid = 1;
