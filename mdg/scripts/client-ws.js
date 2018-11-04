@@ -22,7 +22,7 @@ var ws_msgs = [];
 var ws_cookie = false;
 var ws_port = null;
 var ws_address = "multi-device-grace.herokuapp.com";
-var ws_protocol = "ws";
+var ws_protocol = "wss";
 var ws_type;
 
 //Read vars from config
