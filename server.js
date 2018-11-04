@@ -48,25 +48,7 @@ function start() {
 
   startServer();
 
-  var a = ws.address();
-  var msg = "{ ";
-  try {
-    var keys = Object.keys(a);
-    var vals = Object.values(a);
-    for (var i = 0; i < keys.length; i++) {
-      if (i != 0) { msg += ", "; }
-      msg += keys[i] + ": " + vals[i];
-    }
-    msg += " }";
-    
-  } catch (e) {
-    
-    port++;
-    count++;
-    if (count < maxCount) {
-      start();
-    }
-  }
+  
 }
 
 
