@@ -9,7 +9,13 @@ const INDEX = path.join(__dirname, 'index.html');
 const CLIENT_INDEX = path.join(__dirname, 'redirecter.html');
 
 const server = express()  
-  .get((req, res) => res.sendFile(path.join(__dirname, req.path)) )
+  .use((req, res) => {
+    if (req.path && req.method.toLowerCase() == "get") {
+      res.sendFile(path.join(__dirname, req.path));
+    } else {
+      res.sendFile( INDEX );
+    }
+  })   
   .listen(PORT, () => console.log(`Listening on ${ PORT }`));
 
 
