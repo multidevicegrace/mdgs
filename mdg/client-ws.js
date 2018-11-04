@@ -306,8 +306,9 @@ function ws_handleClose(msg) {
   } else {
     // console.log("WS closed timeout / close()");    
     ws_attempt = 0;
-    ws_updateConStatus(0,"Not Connected.");
-    ws_startWekSocket();
+    conState = 0;
+    if (conStatus) { conStatus.innerHTML = "Not Connected."; }
+    ws_startWebSocket();
   }
 }
 
