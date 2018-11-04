@@ -387,6 +387,7 @@ function ws_handleClose(msg) {
     ws_attempt = 0;
     console.log("WS closed timeout / close()");
     ws_updateConStatus(0,"Not Connected.");
+    ws_StartWekSocket();
   }
 }
 

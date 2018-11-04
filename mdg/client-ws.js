@@ -311,8 +311,10 @@ function ws_handleClose(msg) {
     ws_err = 0;
     ws_startWebSocket();
   } else {
-    // console.log("WS closed timeout / close()");
+    // console.log("WS closed timeout / close()");    
+    ws_attempt = 0;
     ws_updateConStatus(0,"Not Connected.");
+    ws_StartWekSocket();
   }
 }
 
