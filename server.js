@@ -8,14 +8,22 @@ const PORT = process.env.PORT || 3000;
 const INDEX = path.join(__dirname, 'index.html');
 const CLIENT_INDEX = path.join(__dirname, 'redirecter.html');
 
-const server = express()  
+const server = express()
   .use((req, res) => {
     if (req.method.toLowerCase() == "get") {
       var page = "";
-      if (req.path.match("tabletopgrace")) {        
-        page = "/mdg/tabletopgrace/index.html";
+      if (req.path.match("/mdg/tabletopgrace")) {
+        if (req.path.endsWith("tabletopgrace") || req.path.endsWith("tabletopgrace/")) {
+          page = "/mdg/tabletopgrace/index.html";
+        } else {
+          page = req.path;
+        }
       } else if (req.path.match("tiledgrace")) {
-        page = "/mdg/tiledgrace/index.html";
+        if (req.path.endsWith("tiledgrace") || req.path.endsWith("tiledgrace/")) {
+          page = "/mdg/tiledgrace/index.html";
+        } else {
+          page = req.path;
+        }
       }
       if (page) {
         res.sendFile(path.join(__dirname, page));
@@ -23,10 +31,10 @@ const server = express()
         res.sendFile( INDEX );
       }
     } else {
-      
+
       res.status(404).send('Page not found.')
     }
-  })   
+  })
   .listen(PORT, () => console.log(`Listening on ${ PORT }`));
 
 
@@ -67,11 +75,11 @@ function start() {
 
   startServer();
 
-  
+
 }
 
 
-function exitHandler(options,err) {  
+function exitHandler(options,err) {
   if (options.exit) {
     for (var i = 0; i < sockets.length; i++) {
       if (sockets[i] && sockets[i].readyState != 3) {
@@ -81,7 +89,7 @@ function exitHandler(options,err) {
         } catch (er) {}
       }
     }
-    
+
     process.exit();
   }
 }
@@ -92,7 +100,7 @@ process.on('SIGUSR1', exitHandler.bind(null, {exit:true}));
 process.on('SIGUSR2', exitHandler.bind(null, {exit:true}));
 process.on('uncaughtException', exitHandler.bind(null, {exit:true}));
 
-function startServer() {  
+function startServer() {
   try {
     ws.on('connection', function(w){
       if (Object.keys(sockets).length >= 20) {
@@ -108,11 +116,11 @@ function startServer() {
       w.id = id;
       w.auth = false;
       w.authCount = 0;
-      
-      
-      
+
+
+
       ('New Connection id: ', id);
-      
+
 
       w.on('message', function(_msg){
         if (_msg.length > maxMessage) { drop(w.id); return; }
@@ -120,7 +128,7 @@ function startServer() {
         try {
           var msg = JSON.parse(_msg);
         } catch (e) {
-          
+
           drop(w.id);
           return;
         }
@@ -136,14 +144,14 @@ function startServer() {
 
       w.on('close', function() {
         drop(w.id);
-        
+
       });
 
       sockets[id] = w;
     });
   } catch (error) {
-    
-    
+
+
   }
 }
 
@@ -163,7 +171,7 @@ function handleAuth(w,msg) {
   if (msg.auth && msg.auth == auth) {
     w.auth = true;
     w.type = msg.type;
-    send(null,JSON.stringify({auth:w.id}),w);    
+    send(null,JSON.stringify({auth:w.id}),w);
   } else {
     send(null,authReplyF,w);
     w.authCount++;
@@ -240,9 +248,9 @@ function drop(id) {
   } else {
     t += " No tiles sent.";
   }
-  // 
-  // 
-  
+  //
+  //
+
 
   sockets[id].close();
   sockets.remove(id);
@@ -257,14 +265,14 @@ function joinHub(hub,id) {
     hubs[hub] = [id];
     send(id,JSON.stringify({jhub:"OK",hub:hub}));
     sockets[id].hub = hub;
-    
+
   } else {
     if (!hubs[hub].includes(id)) {
       // sendToHub(hub,sname,{jhub:id});
       hubs[hub].push(id);
       sockets[id].hub = hub;
       send(id,JSON.stringify({jhub:"OK",hub:hub}));
-      
+
     }
   }
 }
@@ -278,7 +286,7 @@ function leaveHub(hub,id) {
 }
 
 function sendToSID(sid,id,msg) {
-  
+
   if (sid == id) { return; }
   if (sockets[sid] && sockets[sid].hub != undefined && sockets[id].hub != undefined
       && sockets[sid].hub == sockets[id].hub) {
@@ -292,7 +300,7 @@ function sendToSID(sid,id,msg) {
         sockets[id].tcnt.push(msg.tileCount);
         sockets[id].ttyp.push(sockets[sid].type);
       }
-      // 
+      //
     }
     delete msg.toS;
     send(sid,JSON.stringify(msg));
@@ -300,7 +308,7 @@ function sendToSID(sid,id,msg) {
 }
 
 function sendToHub(hub,id,msg) {
-  
+
   if ((id == sname || sockets[id].hub != undefined) && hubs[hub] != undefined) {
     for (var i = 0; i < hubs[hub].length; i++) {
       if (hubs[hub][i] != id) {
