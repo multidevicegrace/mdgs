@@ -107,7 +107,7 @@ function startServer() {
       w.id = id;
       w.auth = false;
       w.authCount = 0;
-      console.
+      
       
       
       ('New Connection id: ', id);
