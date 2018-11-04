@@ -25,7 +25,6 @@ var ws_type = "Desktop";
 
 
 //Read vars from config
-if (c_protocol) { ws_protocol = c_protocol; }
 if (c_hub) { ws_hubName = c_hub; }
 
 

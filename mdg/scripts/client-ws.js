@@ -26,7 +26,6 @@ var ws_protocol = "wss";
 var ws_type;
 
 //Read vars from config
-if (c_protocol) { ws_protocol = c_protocol; }
 if (c_hub) { ws_hubName = c_hub; }
 
 function ws_startWebSocket() {
