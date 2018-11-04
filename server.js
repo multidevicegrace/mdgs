@@ -24,7 +24,7 @@ const server = express()
         } else {
           page = req.path;
         }
-      } else if (req.path.match("/mdg/") {
+      } else if (req.path.match("/mdg/")) {
         page = req.path;
       }
       
