@@ -9,6 +9,7 @@ const INDEX = path.join(__dirname, 'index.html');
 const CLIENT_INDEX = path.join(__dirname, 'redirecter.html');
 
 const server = express()
+  .get('/mdg*', ((req, res) => res.sendFile(path.join(__dirname, req.path)))
   .use((req, res) => res.sendFile(INDEX) )
   .listen(PORT, () => console.log(`Listening on ${ PORT }`));
 
