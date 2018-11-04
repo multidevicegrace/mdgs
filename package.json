@@ -1,7 +1,10 @@
 {
+  "name": "MDGWS",
   "engines": {
     "node": "10.3.0"
   },
+  "description": "",
+  "main": "index.js",
   "scripts": {
     "start": "node server.js"
   },
