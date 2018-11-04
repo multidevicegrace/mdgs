@@ -11,7 +11,15 @@ const CLIENT_INDEX = path.join(__dirname, 'redirecter.html');
 const server = express()  
   .use((req, res) => {
     if (req.path && req.method.toLowerCase() == "get") {
-      res.sendFile(path.join(__dirname, req.path));
+      var page = "";
+      if (req.path.match("tabletopgrace")) {        
+        page = "/mdg/tabletopgrace/index.html";
+      } else if (req.path.match("tiledgrace")) {
+        page = "/mdg/tiledgrace/index.html";
+      }
+      if (page) {  
+        res.sendFile(path.join(__dirname, page));
+      }
     } else {
       res.sendFile( INDEX );
     }
