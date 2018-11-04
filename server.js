@@ -11,21 +11,23 @@ const CLIENT_INDEX = path.join(__dirname, 'redirecter.html');
 const server = express()
   .use((req, res) => {
     if (req.method.toLowerCase() == "get") {
-      var page = "";
-      console.log(req.originalUrl);
+      var page = "";      
       if (req.path.match("/mdg/tabletopgrace")) {
         if (req.path.endsWith("tabletopgrace") || req.path.endsWith("tabletopgrace/")) {
           page = "/mdg/tabletopgrace/index.html";
         } else {
           page = req.path;
         }
-      } else if (req.path.match("tiledgrace")) {
+      } else if (req.path.match("/mdg/tiledgrace")) {
         if (req.path.endsWith("tiledgrace") || req.path.endsWith("tiledgrace/")) {
           page = "/mdg/tiledgrace/index.html";
         } else {
           page = req.path;
         }
+      } else if (req.path.match("/mdg/") {
+        page = req.path;
       }
+      
       if (page) {
         res.sendFile(path.join(__dirname, page));
       } else {
