@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html style="overflow:hidden;">
+ <head>
+     <meta charset="UTF-8">
+     <title>Cross Device Grace Redirecter</title>
+     <link rel="stylesheet" type="text/css" href="style.css">   
+ </head>
+ <body>    
+    <script type="text/javascript" src="mobile.js"></script>
+    <script>
+    var tbltop = "tabletopgrace";
+    var dsktop = "tiledgrace"; 
+    if (mobileAndTabletCheck()) {
+      //Tablet
+      window.location += tbltop + "#mobile";
+    } else if (navigator.maxTouchPoints > 5) {
+      //Tabletop
+      window.location += tbltop;
+    } else {
+      //Desktop
+      window.location += dsktop;
+    }
+    </script>
+ </body>
+</html>
