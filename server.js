@@ -91,9 +91,7 @@ process.on('SIGUSR1', exitHandler.bind(null, {exit:true}));
 process.on('SIGUSR2', exitHandler.bind(null, {exit:true}));
 process.on('uncaughtException', exitHandler.bind(null, {exit:true}));
 
-function startServer() {
-  server = http.createServer().listen(port);
-  ws = new Server({server:server});
+function startServer() {  
   try {
     ws.on('connection', function(w){
       if (Object.keys(sockets).length >= 20) {
