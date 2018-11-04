@@ -374,12 +374,7 @@ function ws_updateConStatus(state, txt, override) {
 function ws_handleClose(msg) {
   ws_reset();
   if (ws_err) {
-    if (ws_attempt >= ws_attempts) {
-      console.log("WS closed" + (msg == null ? "" : ": " + msg) + ". Switching to network " + (ws_network+1));
-      ws_network++;
-    } else {
-      ws_attempt++;
-    }
+    
     ws_err = 0;
     ws_startWebSocket();
   } else {

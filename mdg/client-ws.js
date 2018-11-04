@@ -300,13 +300,7 @@ function ws_reset() {
 
 function ws_handleClose(msg) {
   ws_reset();
-  if (ws_err) {
-    if (ws_attempt >= ws_attempts) {
-      // console.log("WS closed" + (msg == null ? "" : ": " + msg) + ". Switching to network " + (ws_network+1));
-      ws_network++;
-    } else {
-      ws_attempt++;
-    }
+  if (ws_err) {    
     ws_err = 0;
     ws_startWebSocket();
   } else {
@@ -314,25 +308,6 @@ function ws_handleClose(msg) {
     ws_attempt = 0;
     ws_updateConStatus(0,"Not Connected.");
     ws_StartWekSocket();
-  }
-}
-
-function ws_handleClose(msg) {
-  ws_reset();
-  if (ws_err) {
-    if (ws_attempt >= ws_attempts) {
-      // console.log("WS closed" + (msg == null ? "" : ": " + msg) + ". Switching to network " + (ws_network+1));
-      ws_network++;
-    } else {
-      ws_attempt++;
-    }
-    ws_err = 0;
-    ws_startWebSocket();
-  } else {
-    ws_attempt = 0;
-    // console.log("WS closed timeout / close()");
-    conState = 0;
-    if (conStatus) { conStatus.innerHTML = "Not Connected."; }
   }
 }
 
