@@ -12,6 +12,7 @@ const server = express()
   .use((req, res) => {
     if (req.method.toLowerCase() == "get") {
       var page = "";
+      console.log(req.originalUrl);
       if (req.path.match("/mdg/tabletopgrace")) {
         if (req.path.endsWith("tabletopgrace") || req.path.endsWith("tabletopgrace/")) {
           page = "/mdg/tabletopgrace/index.html";
