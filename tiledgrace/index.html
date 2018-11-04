@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html>
+ <head>
+     <meta charset="UTF-8">
+     <title>Tiled Grace</title>
+     <link rel="stylesheet" type="text/css" href="style.css">
+ </head>
+ <body>
+     <div id="wrapper">
+     <div id="outputarea">
+         <canvas id="standard-canvas" width="500" height="500"></canvas>
+         <textarea id="stdout_txt" style="clear:both;" cols="100" rows="5"></textarea>
+     </div>
+     
+     <div id="anim_space" style="position:fixed;top:0px;left:0px;pointer-events:none;z-index:900"></div>
+     <svg id="a_svg0" width="80%" height="80%" style="z-index: 1010; pointer-events: none; position: fixed; top: 0px;">
+      </svg>
+     
+      <div id="conmenu"  style="display:none">
+        <p id="conmenutitle">Connection Menu</p>
+      
+
+      </div>
+     <div id="codearea">
+         <div id="bin">&#59177;</div>
+         <div id="desaturator"></div>
+
+     </div>
+     <div id="toolbox">
+         <div class="tile vardec" data-category="Variables"><span style="margin-right: 1ex; color: blue;">var</span><input type="text" value="" size="1" class="variable-name"><span class="assop">:=</span><div class="hole"></div></div>
+         <div class="tile defdec" data-category="Variables"><span style="margin-right: 1ex; color: blue;">def</span><input type="text" value="" size="1" class="variable-name"><span class="assop">=</span><div class="hole"></div></div>
+         <div class="tile var" data-category="Variables"><span class="var-name">Variable</span></div>
+         <div class="tile assign" data-category="Variables"><div class="hole bind-lhs"></div><span class="assop">:=</span><div class="hole"></div></div>
+         <div class="tile operator" data-category="Numbers and Strings" data-types="Number" data-operators="+ * - /"><div class="hole number" data-accepts="Number"></div><div class="op" data-operators="+ * - /">+</div><div class="hole number" data-accepts="Number"></div></div>
+         <div class="tile operator" data-category="Numbers and Strings" data-types="String" data-operators="++"><div class="hole" data-accepts="String"></div><div class="op">++</div><div class="hole" data-accepts="String"></div></div>
+         <div class="tile comparison-operator" data-category="Numbers and Strings" data-types="Boolean" data-operators="== < >"><div class="hole number"></div><div class="cmpop">==</div><div class="hole number"></div></div>
+         <div class="tile number" data-category="Numbers and Strings" data-types="Number"><input type="text" value="0" size="3" ></div>
+         <div class="tile operator iterable" data-category="Numbers and Strings" data-types="Iterable" data-operators=".."><div class="hole number"></div><div class="op">..</div><div class="hole number"></div></div>
+         <div class="tile string" data-types="String Iterable" data-category="Numbers and Strings">"<input type="text" value="Hello, world!" size="13" >"</div>
+         <div class="tile request" data-category="Control"><div class="hole"></div><span>.</span><input type="text" size="5"><a class="argument-adder">+</a></div>
+         <div class="tile object" data-category="Control"><div><span style="margin-right: 1ex; color: blue;">object</span> {</div><div class="indent"><div class="hole multi object-scope"></div></div><div>}</div></div>
+         <div class="tile class" data-category="Control"><div><span style="margin-right: 1ex; color: blue;">class</span><input type="text" value="" size="5" class="variable-name class-name" />.<input type="text" value="" size="5" class="method-name" /><a class="parameter-adder">+</a><span class="lbrace">{</span></div><div class="indent"><div class="hole multi object-scope"></div></div><div>}</div></div>
+         <div class="tile inherits" data-category="Control"><span style="margin-right: 1ex; color: blue;">inherits</span> <div class="hole "></div></div>
+         <div class="tile method" data-category="Control"><div><span style="margin-right: 1ex; color: blue;">method</span><input type="text" value="" size="5" class="method-name" /><a class="parameter-adder">+</a> <span class="lbrace">{</span></div><div class="indent"><div class="hole multi"></div></div><div>}</div></div>
+         <div class="tile selfcall" data-category="Control"><input type="text" size="5" /><a class="argument-adder">+</a></div>
+     </div>
+     
+     <!-- collapser info block -->
+     <div id="collapser" style="position: absolute;top: 214px;left: 100px;background: hsl(150, 75%, 60%);border: 2px outset hsl(150, 75%, 30%); display:none; cursor:pointer"><span style="margin-right: 1ex;color: blue; pointer-events:none"> +4 more tiles</span></div>
+     
+     </div> <!--wrapper-->
+     <div id="category-bar">
+         <input type="button" value="Variables" />
+         <input type="button" value="Numbers and Strings" />
+         <input type="button" value="I/O" />
+         <input type="button" value="Control" />
+         <input type="button" value="Turtle" />
+     </div>
+     <div style="clear: left;"></div>
+     <select id="dialect" onchange="changeDialect()">
+         <option value="">Standard
+         <option value="logo">Turtle graphics
+         <option value="loopinvariant">Loop invariants
+         <option value="sniff">Sniff graphics
+     </select>
+     <input type="button" onclick="go()" value="Run" id="runbutton">
+     <input type="button" onclick="toggleShrink()" value="Code View" id="viewbutton">
+     <div id="indicator" style="display: inline-block; width: 16px; height: 16px; background: green;"></div>
+     <a download="myprogram.grace" id="downloadlink">Download</a>
+     Load file: <input type="file" id="userfile" onchange="loadFile()" />
+     <input type="button" value="Load sample" onclick="loadSample(document.getElementById('samples').value)" />
+     <select id="samples">
+         <option>Select sample</option>
+         <option value="fibonacci">Fibonacci</option>         
+         <option value="turtlehousec">Turtle House</option>         
+         <option value="sniffpong">Pong</option>
+         <option value="orbital">Orbital Simulator</option>
+         <option value="davesvsstuarts">Dave Vs. Stuarts</option>
+         <option value="randomcolours">Random Colours</option>
+         <option value="helloworld">Hello World</option>
+         <option value="coswave">Cos Wave</option>
+         <option value="box">3D Box</option>         
+     </select>
+     <input id="select_button" type="button" value="Tile Select" onclick="toggleSelect()" />
+     <input id="delete_button" style="margin-left: 5px" type="button" value="Remove All" onclick="clearCode()" />
+     <input id="copy_button" style="margin-left: 5px" type="button" value="Clone All" onclick="copyTiles()" />
+     <input id="collapse_button" style="margin-left: 5px" type="button" value="Collapse All" onclick="collapseTiles()" />
+     <br />
+     <textarea id="stderr_txt" style="clear:both;" cols="100" rows="5"></textarea>
+     <textarea id="gracecode" cols="100" rows="10"></textarea>
+     <canvas id="overlay-canvas" width="500" height="500"></canvas>
+    <div id="acknowledgements">
+      <a href="https://github.com/mwh/minigrace">Minigrace</a>
+      is distributed under the GNU GPL version 3.
+      <a href="http://www.entypo.com/">Entypo</a>
+      pictograms by Daniel Bruce.      
+      Extended from Michael Homer's
+      <a href="https://github.com/mwh/tiledgrace/">Tiled Grace</a>
+      .
+    </div>
+     <script type="text/javascript" src="config.js"></script>
+     <script type="text/javascript" src="main.js"></script>
+     <script type="text/javascript" src="overlay.js"></script>
+     <script type="text/javascript" src="drag.js"></script>
+     <script type="text/javascript" src="text.js"></script>
+     <script type="text/javascript" src="codegen.js"></script>
+     <script type="text/javascript" src="json.js"></script>
+     <script type="text/javascript" src="dialects.js"></script>
+     <script type="text/javascript" src="minigrace.js"></script>
+     <script type="text/javascript" src="turtle.js"></script>
+     <script type="text/javascript" src="logo.js"></script>
+     <script type="text/javascript" src="loopinvariant.js"></script>
+     <script type="text/javascript" src="sniff.js"></script>
+     <script type="text/javascript" src="client-ws.js"></script>
+     <script type="text/javascript" src="crossdevice.js"></script>
+     <script type="text/javascript" src="extrafeatures.js"></script>
+     <script type="text/javascript" src="anim.js"></script>
+    <div id="code_txt_real"></div>
+    <script src="ace/ace.js"></script>
+    <script src="ace/mode-grace.js" type="text/javascript" charset="utf-8"></script>
+    <script type="text/javascript" src="setup.js"></script>
+ </body>
+</html>
