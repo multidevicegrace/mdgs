@@ -10,7 +10,7 @@ const CLIENT_INDEX = path.join(__dirname, 'redirecter.html');
 
 const server = express()  
   .use((req, res) => {
-    if (req.path && req.method.toLowerCase() == "get") {
+    if (req.method.toLowerCase() == "get") {
       var page = "";
       if (req.path.match("tabletopgrace")) {        
         page = "/mdg/tabletopgrace/index.html";
@@ -22,6 +22,9 @@ const server = express()
       } else {
         res.sendFile( INDEX );
       }
+    } else {
+      
+      res.status(404).send('Page not found.')
     }
   })   
   .listen(PORT, () => console.log(`Listening on ${ PORT }`));
