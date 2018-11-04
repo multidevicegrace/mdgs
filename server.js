@@ -19,7 +19,8 @@ const server = express()
       }
       if (page) {  
         res.sendFile(path.join(__dirname, page));
-      }
+      } else {
+        res.status(404).send('Page not found.')
     } else {
       res.sendFile( INDEX );
     }
