@@ -22,7 +22,7 @@ var ws_port = null;
 var ws_address = "multi-device-grace.herokuapp.com";
 var ws_protocol = "wss";
 var ws_type = "Desktop";
-
+var ws_ping_checker;
 
 //Read vars from config
 if (c_hub) { ws_hubName = c_hub; }
@@ -191,7 +191,7 @@ function ws_handleOpen() {
       }
     }
     websock.send(JSON.stringify({"auth":ws_cid,"type":ws_type}));
-    if (!ws_pingChecker) {
+    if (!ws_ping_checker) {
       ws_pingChecker = window.setInterval(ws_ping,40);
     }
   }  
