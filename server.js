@@ -197,6 +197,8 @@ function handleMessage(w,msg) {
   } else if (msg.toS) {
     deleteOtherData(msg,3);
     sendToSID(msg.toS,w.id,msg);
+  } else if (msg.ping) {
+    w.send(JSON.stringify({pong:"pong"}));
   }
 }
 

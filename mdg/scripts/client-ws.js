@@ -222,7 +222,7 @@ function ws_handleOpen() {
       websock.send(JSON.stringify({"auth":ws_cid,"type":ws_type}));
     }
     if (!ws_ping_checker) {
-      ws_ping_checker = window.setInterval(ws_ping,40);
+      ws_ping_checker = window.setInterval(ws_ping,40000);
     }
   }
 }
