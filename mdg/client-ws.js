@@ -27,6 +27,12 @@ var ws_type = "Desktop";
 //Read vars from config
 if (c_hub) { ws_hubName = c_hub; }
 
+function ws_ping() {  
+  if (websock && websock.readyState == 1) {
+    websock.send(JSON.stringify({ping:"ping"}));
+  }
+}
+
 
 function ws_startWebSocket() {
   conState = 1;
@@ -185,7 +191,10 @@ function ws_handleOpen() {
       }
     }
     websock.send(JSON.stringify({"auth":ws_cid,"type":ws_type}));
-  }
+    if (!ws_pingChecker) {
+      ws_pingChecker = window.setInterval(ws_ping,40);
+    }
+  }  
 }
 
 function ws_statusRequest() {

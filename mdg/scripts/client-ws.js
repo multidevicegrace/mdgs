@@ -28,6 +28,12 @@ var ws_type;
 //Read vars from config
 if (c_hub) { ws_hubName = c_hub; }
 
+function ws_ping() {  
+  if (websock && websock.readyState == 1) {
+    websock.send(JSON.stringify({ping:"ping"}));
+  }
+}
+
 function ws_startWebSocket() {
   if (system_mode == 1) { ws_type = "Mobile"; } else { ws_type = "Tabletop"; }
   
@@ -213,6 +219,9 @@ function ws_handleOpen() {
       }
     } else {      
       websock.send(JSON.stringify({"auth":ws_cid,"type":ws_type}));
+    }
+    if (!ws_pingChecker) {
+      ws_pingChecker = window.setInterval(ws_ping,40);
     }
   }
 }
